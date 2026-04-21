@@ -2,18 +2,14 @@
 
 namespace App\Controller;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/api/v1')]
 class TestController extends AbstractController
 {
-    public function __construct(private readonly LoggerInterface $logger)
-    {
-    }
-
     /**
      * test - Тестовый контроллер для проверки работоспособности сервиса
      *
@@ -24,7 +20,6 @@ class TestController extends AbstractController
     #[Route('/test', name: 'test', methods: ['GET'])]
     public function test(#[MapQueryParameter] ?string $name = null): Response
     {
-        $this->logger->debug('test', ['request' => $name]);
         if (!$name) {
             return $this->json(['status' => 'fail', 'message' => 'name is required'], 400);
         }
