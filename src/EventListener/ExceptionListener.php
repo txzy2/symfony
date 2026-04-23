@@ -12,13 +12,19 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
 
+        // Проверяем отправили ли мы в хедарах ошибки дополнительный код
+        $headers = $exception instanceof HttpExceptionInterface
+            ? $exception->getHeaders()
+            : null;
+
+        // Проверяем statusCode если его нет то 500
         $statusCode = $exception instanceof HttpExceptionInterface
             ? $exception->getStatusCode()
             : 500;
 
         $event->setResponse(new JsonResponse([
             'error' => $exception->getMessage(),
-            'code' => $statusCode,
+            'code' => $headers['code'] ?? $statusCode
         ], $statusCode));
     }
 }
