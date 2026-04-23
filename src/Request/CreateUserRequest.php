@@ -17,7 +17,7 @@ readonly class CreateUserRequest
     public function validate(Request $request): CreateUserDto
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new CreateUserDto(email: $data["email"]);
+        $dto = new CreateUserDto(email: $data['email'] ?? '');
         $this->validationService->validate($dto);
 
         return $dto;
