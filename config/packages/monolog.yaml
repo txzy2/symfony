@@ -18,6 +18,8 @@ when@dev:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: [ "!event" ]
+                filename_format: "{date}/dev"
+                date_format: "Y/m/d"
             console:
                 type: console
                 process_psr_3_messages: false

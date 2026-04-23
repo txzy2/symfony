@@ -26,10 +26,15 @@ class ReqResLogListener
     {
         $request = $event->getRequest();
 
+        $isJson = str_contains($request->headers->get('content-type', ''), 'application/json');
+        $body = $isJson
+            ? json_decode($request->getContent(), true) ?? []
+            : $request->request->all();
+
         $this->logger->info(
             "INCOMING REQUEST {$request->getPathInfo()} (METHOD: {$request->getMethod()})",
             [
-                "body" => $request->request->all(),
+                "body" => $body,
                 "query" => $request->query->all(),
                 "headers" => [
                     "content-type" => $request->headers->get('content-type'),
@@ -52,8 +57,8 @@ class ReqResLogListener
         $response = $event->getResponse();
         $request = $event->getRequest();
         $duration = round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 3);
-        $level = $response->getStatusCode() >= 400 ? Level::Warning : Level::Info;
 
+        $level = $response->getStatusCode() >= 400 ? Level::Warning : Level::Info;
         $this->logger->log(
             $level,
             "RESPONSE {$request->getMethod()} {$request->getPathInfo()} ({$duration}s)})",
