@@ -11,6 +11,7 @@ class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
+//        dd($exception);
 
         // Проверяем отправили ли мы в хедарах ошибки дополнительный код
         $headers = $exception instanceof HttpExceptionInterface
@@ -22,8 +23,11 @@ class ExceptionListener
             ? $exception->getStatusCode()
             : 500;
 
+        $message = $exception->getMessage();
+        $decoded = json_decode($message, true);
+
         $event->setResponse(new JsonResponse([
-            'error' => $exception->getMessage(),
+            'error' => $decoded ?? $message,
             'code' => $headers['code'] ?? $statusCode
         ], $statusCode));
     }

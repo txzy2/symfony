@@ -5,10 +5,10 @@ namespace App\Helpers;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValidationService
+readonly class ValidationService
 {
     public function __construct(
-        private readonly ValidatorInterface $validator
+        private ValidatorInterface $validator
     )
     {
     }
