@@ -1,0 +1,6 @@
+parameters:
+    app.token_secret: '%env(TOKEN_SECRET)%'
+
+    # Параметр нужный для защиты опеределенных контроллеров
+    app.protected_routes:
+        - 'users_register'

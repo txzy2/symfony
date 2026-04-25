@@ -11,7 +11,6 @@ class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-//        dd($exception);
 
         // Проверяем отправили ли мы в хедарах ошибки дополнительный код
         $headers = $exception instanceof HttpExceptionInterface

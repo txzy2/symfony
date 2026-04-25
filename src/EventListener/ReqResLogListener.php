@@ -67,6 +67,7 @@ class ReqResLogListener
                 "method" => $request->getMethod(),
                 "path" => $request->getPathInfo(),
                 "body" => json_decode($response->getContent(), true),
+                "user-agent" => $request->headers->get('user-agent')
             ]
         );
     }
