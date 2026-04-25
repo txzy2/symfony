@@ -1,4 +1,5 @@
 parameters:
+    app.timezone: '%env(APP_TIMEZONE)%'
     app.token_secret: '%env(TOKEN_SECRET)%'
 
     # Параметр нужный для защиты опеределенных контроллеров
