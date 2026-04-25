@@ -3,6 +3,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.dev
 /.env
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
@@ -20,8 +21,8 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-./.idea
+.idea
 
-./reddata
+reddata
 ./db_data
 ./nginx/logs
