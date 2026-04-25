@@ -14,6 +14,13 @@ readonly class CreateUserRequest
     {
     }
 
+    /**
+     * validate - валидация
+     *
+     * @param Request $request
+     *
+     * @return CreateUserDto
+     */
     public function validate(Request $request): CreateUserDto
     {
         $data = json_decode($request->getContent(), true);

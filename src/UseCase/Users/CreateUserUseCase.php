@@ -30,7 +30,6 @@ readonly class CreateUserUseCase
     public function execute(CreateUserDto $userData): UserResponseDTO
     {
         if ($this->usersRepository->existByEmail($userData->email)) {
-            $this->logger->warning(sprintf('User with email %s already exists', $userData->email));
             throw new HttpException(
                 (int)ErrorsEnum::USER_ALREADY_EXISTS->value,
                 ErrorsEnum::USER_ALREADY_EXISTS->getMessage($userData->email),
@@ -43,14 +42,10 @@ readonly class CreateUserUseCase
             $user = User::create($userData->email);
             $this->usersRepository->save($user);
 
-            $this->logger->info("User {$user->getId()} was created}");
             return new UserResponseDTO($user);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            throw new HttpException(
-                (int)ErrorsEnum::INTERNAL_ERROR->value,
-                ErrorsEnum::INTERNAL_ERROR->getMessage()
-            );
+            throw new HttpException((int)ErrorsEnum::INTERNAL_ERROR->value, ErrorsEnum::INTERNAL_ERROR->getMessage());
         }
     }
 
