@@ -66,7 +66,7 @@ final class CheckTokenListener
     #[AsEventListener]
     public function __invoke(ControllerEvent $event): void
     {
-        if (!in_array($event->getRequest()->attributes->get('_route'), $this->protectedRoutes)) {
+        if (!\in_array($event->getRequest()->attributes->get('_route'), $this->protectedRoutes)) {
             return;
         }
 
@@ -82,14 +82,15 @@ final class CheckTokenListener
             );
         }
 
-        $expected = hash_hmac(
-            'sha256',
-            $request->getMethod() . $request->getPathInfo() . $headersData->xTimeStamp . $request->getContent(),
-            $this->secret,
-        );
+        $this->logger->info("VALIDATE TOKEN HEADERS EXPIRED", ['body' => $request->getContent(), 'path' => $request->getPathInfo()]);
+        $signingString = $request->getMethod() . $request->getPathInfo() . $headersData->xTimeStamp . $request->getContent();
+        $expected = hash_hmac('sha256', $signingString, $this->secret);
 
         if (!hash_equals($expected, $headersData->xSignature)) {
-            $this->logger->warning("HASH NOT VALID");
+            $this->logger->warning("VALIDATE TOKEN HEADERS INVALID", [
+                'headers' => $headersData->xSignature,
+                'expected' => $expected,
+            ]);
             throw new HttpException(
                 ErrorsEnum::TOKEN_INVALID->getHttpCode(),
                 ErrorsEnum::TOKEN_INVALID->getMessage(),

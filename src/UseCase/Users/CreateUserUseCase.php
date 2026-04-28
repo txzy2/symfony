@@ -31,10 +31,9 @@ readonly class CreateUserUseCase
     {
         if ($this->usersRepository->existByEmail($userData->email)) {
             throw new HttpException(
-                (int)ErrorsEnum::USER_ALREADY_EXISTS->value,
+                ErrorsEnum::USER_ALREADY_EXISTS->getHttpCode(),
                 ErrorsEnum::USER_ALREADY_EXISTS->getMessage($userData->email),
-                null,
-                ['code' => ErrorsEnum::USER_ALREADY_EXISTS->value]
+                headers: ['code' => ErrorsEnum::USER_ALREADY_EXISTS->value]
             );
         }
 
@@ -45,7 +44,7 @@ readonly class CreateUserUseCase
             return new UserResponseDTO($user);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            throw new HttpException((int)ErrorsEnum::INTERNAL_ERROR->value, ErrorsEnum::INTERNAL_ERROR->getMessage());
+            throw new HttpException(ErrorsEnum::INTERNAL_ERROR->getHttpCode(), ErrorsEnum::INTERNAL_ERROR->getMessage());
         }
     }
 

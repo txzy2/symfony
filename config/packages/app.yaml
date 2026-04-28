@@ -5,3 +5,5 @@ parameters:
     # Параметр нужный для защиты опеределенных контроллеров
     app.protected_routes:
         - 'users_register'
+        - 'edit_user'
+        - 'users_get'

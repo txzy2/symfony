@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\DTO\Users\UpdateUserDTO;
 use App\Enum\Activity;
 use App\Repository\UsersRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
@@ -16,6 +18,10 @@ class User
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(name: 'ext_id', type: Types::GUID, unique: true)]
+    #[ORM\GeneratedValue]
+    private ?string $extId = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
@@ -32,6 +38,7 @@ class User
     public static function create(string $email): self
     {
         $user = new self();
+        $user->setExtId(Uuid::v1());
         $user->setEmail($email);
         $user->setActivity(Activity::ACTIVE);
         return $user;
@@ -101,5 +108,39 @@ class User
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function getExtId(): ?string
+    {
+        return $this->extId;
+    }
+
+    public function setExtId(string $extId): static
+    {
+        $this->extId = $extId;
+
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            "id" => $this->id,
+            "ext_id" => $this->extId,
+            "email" => $this->email,
+            "created_at" => $this->createdAt->format("Y-m-d H:i:s"),
+            "updated_at" => $this->updatedAt->format("Y-m-d H:i:s"),
+        ];
+    }
+
+    public function applyUpdate(UpdateUserDTO $dto): void
+    {
+        if ($dto->email !== null) {
+            $this->email = $dto->email;
+        }
+
+        if ($dto->activity !== null) {
+            $this->activity = $dto->activity;
+        }
     }
 }

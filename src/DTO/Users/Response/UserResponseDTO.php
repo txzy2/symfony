@@ -7,6 +7,7 @@ use App\Entity\User;
 class UserResponseDTO
 {
     public readonly int $id;
+    public readonly ?string $extId;
     public readonly string $email;
     public readonly string $activity;
     public readonly ?string $createdAt;
@@ -15,6 +16,7 @@ class UserResponseDTO
     public function __construct(User $user)
     {
         $this->id = $user->getId();
+        $this->extId = $user->getExtId();
         $this->email = $user->getEmail();
         $this->activity = $user->getActivity()->value;
         $this->createdAt = $user->getCreatedAt()?->format('Y-m-d H:i:s');
@@ -25,6 +27,7 @@ class UserResponseDTO
     {
         return [
             'id' => $this->id,
+            'extId' => $this->extId,
             'email' => $this->email,
             'activity' => $this->activity,
             'created_at' => $this->createdAt,

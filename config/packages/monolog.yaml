@@ -2,6 +2,7 @@ monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
         - requests
+        - tokens
 
 when@dev:
     monolog:
@@ -12,6 +13,13 @@ when@dev:
                 level: info
                 channels: [ "requests" ]
                 filename_format: "{date}/requests"
+                date_format: "Y/m/d"
+            tokens:
+                type: rotating_file
+                path: "%kernel.logs_dir%/tokens.log"
+                level: info
+                channels: [ "tokens" ]
+                filename_format: "{date}/tokens"
                 date_format: "Y/m/d"
             main:
                 type: stream
