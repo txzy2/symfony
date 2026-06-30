@@ -14,17 +14,13 @@ readonly class CreateUserRequest
     {
     }
 
-    /**
-     * validate - валидация
-     *
-     * @param Request $request
-     *
-     * @return CreateUserDto
-     */
     public function validate(Request $request): CreateUserDto
     {
         $data = json_decode($request->getContent(), true);
-        $dto = new CreateUserDto(email: $data['email'] ?? '');
+        $dto = new CreateUserDto(
+            email: $data['email'] ?? '',
+            password: $data['password'] ?? '',
+        );
         $this->validationService->validate($dto);
 
         return $dto;

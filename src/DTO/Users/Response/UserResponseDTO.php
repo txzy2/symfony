@@ -27,7 +27,7 @@ class UserResponseDTO
     {
         return [
             'id' => $this->id,
-            'extId' => $this->extId,
+            'ext_id' => $this->extId,
             'email' => $this->email,
             'activity' => $this->activity,
             'created_at' => $this->createdAt,

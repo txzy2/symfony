@@ -1,9 +1,4 @@
 parameters:
     app.timezone: '%env(APP_TIMEZONE)%'
-    app.token_secret: '%env(TOKEN_SECRET)%'
-
-    # Параметр нужный для защиты опеределенных контроллеров
-    app.protected_routes:
-        - 'users_register'
-        - 'edit_user'
-        - 'users_get'
+    app.jwt_secret: '%env(JWT_SECRET)%'
+    app.jwt_algorithm: '%env(JWT_ALGORITHM)%'

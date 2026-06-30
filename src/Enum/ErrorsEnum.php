@@ -19,12 +19,12 @@ enum ErrorsEnum: string
     case TOKEN_EXPIRED = "403.1";
     case TOKEN_INVALID = "403.2";
 
-    /**
-     * getMessage - получение сообщения ошибки
-     *
-     * @param string|null $message
-     * @return string
-     */
+    case UNAUTHORIZED = "401";
+    case INVALID_CREDENTIALS = "401.1";
+    case TOKEN_INVALID_OR_EXPIRED = "401.2";
+    case INVALID_REFRESH_TOKEN = "401.3";
+    case USER_NOT_FOUND_AUTH = "401.4";
+
     public function getMessage(?string $message = ""): string
     {
         return match ($this) {
@@ -39,6 +39,11 @@ enum ErrorsEnum: string
             self::TOKEN_EXPIRED => "Токен не действителен",
             self::TOKEN_INVALID => "Токен не верен",
             self::NOT_FOUND => 'Ресурс не найден',
+            self::UNAUTHORIZED => 'Не авторизован',
+            self::INVALID_CREDENTIALS => 'Неверный email или пароль',
+            self::TOKEN_INVALID_OR_EXPIRED => 'Токен не действителен или истек',
+            self::INVALID_REFRESH_TOKEN => 'Неверный refresh токен',
+            self::USER_NOT_FOUND_AUTH => 'Пользователь не найден',
             default => 'Ошибка сервера, попробуйте позже',
         };
     }
